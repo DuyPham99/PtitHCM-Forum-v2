@@ -23,7 +23,7 @@
     <script src="resources/js/utils.js"></script>
 </head>
 
-<body>
+<div>
 
 <!-- Navigation & Header -->
 <header>
@@ -329,7 +329,7 @@
                 <div class="thumb">
                     <a href="/pageContent/${study.get(0).idPost}"> <img
                             src="${study.get(0).thumb}"
-                            width="552" height="270">
+                            width="552" height="200">
                     </a>
                 </div>
                 <!--End: Thumb-->
@@ -472,7 +472,7 @@
 </div>
 </div>
 <!-- End: Content -->
-
+<br><br><br><br><br>
 <!--Club-->
 <!-- Start: Content -->
 <div class="container">
@@ -1035,13 +1035,11 @@
 
 <script>
     $(document).ready(function () {
-
-        if (typeof getCookie("Authorization") == "undefined") {
+        if (typeof getCookie("Authorization") == "undefined" || "${user.username}" == "") {
             $("#login").show();
-
         } else {
             $("#account").show();
-            if ("${user.role}" == "USER") document.getElementById("admin").style.display = "none";
+            if ("${user.role}" === "USER") document.getElementById("admin").style.display = "none";
         }
     })
 </script>
@@ -1050,7 +1048,6 @@
 <script>
     function logOut() {
         clearCookies();
-
     }
 </script>
 

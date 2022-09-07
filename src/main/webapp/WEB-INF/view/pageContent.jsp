@@ -91,9 +91,10 @@
                                                 <div class="content">
                                                     <div class="text">
                                                         <!--Start:Title-->
-                                                        <p class="title">
+                                                        <h1 class="">
                                                             ${post.title}
-                                                        </p>
+                                                        </h1>
+                                                        <hr>
                                                         <!--End:Title-->
                                                         <!--Start: content-->
                                                         <p class="body">

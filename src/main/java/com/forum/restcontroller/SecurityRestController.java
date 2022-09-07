@@ -3,6 +3,7 @@ package com.forum.restcontroller;
 import java.net.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.forum.entity.User;
 import com.forum.security.AuthenticationRequest;
 import com.forum.service.UserService;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @RestController
 public class SecurityRestController {
@@ -52,7 +56,12 @@ public class SecurityRestController {
 			final String jwt = jwtTokenUtil.generateToken(userDetails);
 			
 			// add to session and model when login finish
-			request.getSession().setAttribute("username", userDetails.getUsername());
+			SecurityContext sc = SecurityContextHolder.getContext();
+			sc.setAuthentication(usernamePasswordAuthenticationToken);
+			HttpSession session = request.getSession(true);
+			session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+
+//			request.getSession().setAttribute("username", userDetails.getUsername());
 			return  ResponseEntity.ok(new com.forum.security.AuthenticationResponse(jwt));
 		}
 		catch (BadCredentialsException e) {

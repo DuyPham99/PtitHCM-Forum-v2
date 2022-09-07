@@ -10,7 +10,7 @@
                     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
                     <meta name="author" content="Creative Tim">
-                    <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+                    <title>Quản Trị Diễn Đàn</title>
                     <!-- Favicon -->
                     <link rel="icon" href="http://localhost:8000/resources/assets/img/brand/favicon.png"
                         type="image/png">
@@ -53,9 +53,16 @@
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link active" href="/admin/table/1">
+                                            <a class="nav-link" href="/admin/table/1">
                                                 <i class="ni ni-tv-2 text-primary"></i>
                                                 <span class="nav-link-text">Quản lý tài khoản</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/admin/statistic">
+                                                <i class="ni ni-tv-2 text-primary"></i>
+                                                <span class="nav-link-text">Thống kê</span>
                                             </a>
                                         </li>
                                     </ul>

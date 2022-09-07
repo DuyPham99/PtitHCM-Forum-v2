@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,8 @@ import com.forum.entity.User;
 import com.forum.service.ProfileService;
 import com.forum.service.UserService;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @Controller
 public class AccountController {
 
@@ -50,10 +53,11 @@ public class AccountController {
 	
 	@GetMapping("/setting")
 	public String showSetting(HttpServletRequest rq, HttpServletResponse rs, ModelMap model) throws IOException {
-		if (rq.getSession().getAttribute("username") == null) {
+		SecurityContext context = (SecurityContext) rq.getSession().getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+		if (context.getAuthentication().getName() == null) {
 			return "redirect:/";
 		}
-		model.addAttribute("profile", userService.findById( (String) rq.getSession().getAttribute("username")).getProfile());
+		model.addAttribute("profile", userService.findById( context.getAuthentication().getName()).getProfile());
 		return "setting-account";
 	}
 	

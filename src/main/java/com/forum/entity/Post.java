@@ -37,7 +37,6 @@ public class Post {
 
 	@Id
 	@Column(name = "id_post")
-	@NotNull(message = "Không được bỏ trống!")
 	@GeneratedValue
 	Integer idPost;
 	

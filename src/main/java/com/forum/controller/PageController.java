@@ -8,6 +8,7 @@ import com.forum.entity.Notification;
 import com.forum.respository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 
 import javax.servlet.http.HttpSession;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Controller
 public class PageController {
@@ -36,12 +39,13 @@ public class PageController {
 	@GetMapping("/pageContent/{idPost}")
 	String showPage(ModelMap model, @PathVariable ("idPost") int idPost,  HttpSession session) {
 		Post post = postService.findById(idPost);
+		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		String category = post.getCategory().getName();
 		model.addAttribute("post", post);
 		model.addAttribute("category", category);
-		if (session.getAttribute("username") != null) {
+		if (context.getAuthentication().getName() != null) {
 			model.addAttribute("notification",
-					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(session.getAttribute("username").toString())
+					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(context.getAuthentication().getName())
 							.orElse(Collections.emptyList()));
 		}
 		return "pageContent";
@@ -51,7 +55,7 @@ public class PageController {
 	String showPageViaComment(ModelMap model, @PathVariable ("idPost") int idPost, @PathVariable ("idComment") int idComment,  HttpSession session) {
 		Post post = postService.findById(idPost);
 		Notification notification = notificationRepository.findById(idComment).orElse(null);
-
+		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		if (notification != null) {
 			notification.setReaded(true);
 			notificationRepository.save(notification);
@@ -61,9 +65,9 @@ public class PageController {
 		model.addAttribute("post", post);
 		model.addAttribute("category", category);
 
-		if (session.getAttribute("username") != null) {
+		if (context.getAuthentication().getName() != null) {
 			model.addAttribute("notification",
-					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(session.getAttribute("username").toString())
+					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(context.getAuthentication().getName())
 							.orElse(Collections.emptyList()));
 		}
 		return "pageContent";

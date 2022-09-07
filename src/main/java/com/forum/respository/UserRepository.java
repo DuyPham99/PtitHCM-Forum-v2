@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.forum.entity.User;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends CrudRepository<User, String>{
 	@Query(value = "SELECT email FROM user u WHERE u.email = ?1", nativeQuery = true)
@@ -18,5 +21,4 @@ public interface UserRepository extends CrudRepository<User, String>{
 	
 	@Query( value = "SELECT * FROM user WHERE user.delete_flag != 1", nativeQuery = true)
 	public Page<User> getAll(Pageable pageable);
-	
 }

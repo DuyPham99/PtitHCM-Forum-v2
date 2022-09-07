@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -60,6 +61,8 @@ import com.forum.service.PostService;
 import com.forum.service.UserService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 
 @RestController
@@ -90,7 +93,7 @@ public class PostRestcontroller {
     @PostMapping("/create/upload_image")
     @ResponseBody
     Map<String, String> uploadImage(@RequestParam("image") MultipartFile multiPart, @ModelAttribute("listImage") ArrayList<String> listImage) throws IllegalStateException, IOException, InterruptedException {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         String fileName = StringUtils.cleanPath(multiPart.getOriginalFilename());
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
@@ -132,8 +135,8 @@ public class PostRestcontroller {
     @ResponseBody
     String save(@Valid @RequestBody Post post, HttpServletRequest request, ModelMap model) {
         //save
-        post.setUser(userService.findById((String) request.getSession().getAttribute("username")));
-        if (!pathImage.isEmpty() || pathImage == null) {
+        post.setUser(userService.findById(SecurityContextHolder.getContext().getAuthentication().getName()));
+        if (!pathImage.isEmpty()) {
             post.setThumb(pathImage);
         } else {
             post.setThumb("/images/default.jpg");
@@ -154,8 +157,9 @@ public class PostRestcontroller {
     @PostMapping("/update/post/{id}")
     @ResponseStatus(HttpStatus.OK)
     void updatePost(@PathVariable("id") int id, @RequestBody Post newPost, HttpServletRequest rq) {
+        SecurityContext context = (SecurityContext) rq.getSession().getAttribute(SPRING_SECURITY_CONTEXT_KEY);
         Post post = postService.findById(id);
-        String username = ((String) rq.getSession().getAttribute("username")).trim();
+        String username = context.getAuthentication().getName().trim();
         if (username.equalsIgnoreCase(post.getUser().getUsername())) {
             post.setTitle(newPost.getTitle());
             post.setContent(newPost.getContent());
@@ -167,7 +171,8 @@ public class PostRestcontroller {
     @GetMapping("/delete/post/{id}")
     void DeletePost(@PathVariable("id") int id, HttpServletRequest rq) {
         Post post = postService.findById(id);
-        String username = ((String) rq.getSession().getAttribute("username")).trim();
+        SecurityContext context = (SecurityContext) rq.getSession().getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+        String username = context.getAuthentication().getName().trim();
         if (username.equalsIgnoreCase(post.getUser().getUsername())) {
             postService.delete(post);
         }

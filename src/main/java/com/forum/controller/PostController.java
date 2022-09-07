@@ -15,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ import com.forum.entity.Post;
 import com.forum.security.JwtUtil;
 import com.forum.service.PostService;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @Controller
 public class PostController {
 
@@ -35,7 +38,8 @@ public class PostController {
 	
 	@GetMapping("/post")
 	public String showPost(HttpServletRequest request, ModelMap model) throws IOException {
-		if (request.getSession().getAttribute("username") == null)
+		SecurityContext context = (SecurityContext) request.getSession().getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+		if (context.getAuthentication().getName() == null)
 		return "redirect:/";
 		Post post = new Post(); 
 		model.addAttribute("post", post);	

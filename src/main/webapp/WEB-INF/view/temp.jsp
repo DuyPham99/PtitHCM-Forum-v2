@@ -817,7 +817,7 @@
 
 			<script>
 				$(document).ready(function () {
-					if (typeof getCookie("Authorization") == "undefined") {
+					if (typeof getCookie("Authorization") == "undefined" || "${user.username}" == "") {
 						$("#login").show();
 					} else {
 						$("#account").show();

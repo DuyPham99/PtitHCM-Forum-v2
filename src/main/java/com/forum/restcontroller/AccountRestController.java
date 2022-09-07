@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -39,6 +40,8 @@ import com.forum.service.UserService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @RestController
 public class AccountRestController {
 
@@ -55,7 +58,8 @@ public class AccountRestController {
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	void save(@Valid @RequestBody Profile profile, HttpServletRequest request, ModelMap model, HttpSession session) {
-		profile.setAvatar("images/" + session.getAttribute("username").toString().trim()+ ".jpg");
+		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+		profile.setAvatar("images/" + context.getAuthentication().getName().trim()+ ".jpg");
 		profileService.save(profile);
 	}
 
@@ -63,9 +67,10 @@ public class AccountRestController {
 	@PostMapping("/image/save")
 	void saveImage(@RequestParam("avatar") MultipartFile file, HttpSession session, HttpServletResponse response, ModelMap model) throws IOException {
 		String path = session.getServletContext().getRealPath("/");
+		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		filename = file.getOriginalFilename();
 		pathSave = "src/main/resources/static/images/"
-				+ session.getAttribute("username").toString().trim()+ ".jpg";
+				+ context.getAuthentication().getName().trim()+ ".jpg";
 		try {
 			byte barr[] = file.getBytes();
 			BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(pathSave));
@@ -84,12 +89,13 @@ public class AccountRestController {
 	public ResponseEntity<?> ChangePassword(@RequestBody String json   ,BindingResult errors, HttpServletResponse rp, HttpSession session) {
 		JSONObject jsonObj = new JSONObject(json);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		System.out.println(jsonObj.get("oldPassword").toString());
 		if (jsonObj.get("oldPassword").toString().isEmpty() || jsonObj.get("retypePassword").toString().isEmpty() || 
 				jsonObj.get("newPassword").toString().isEmpty()) {
 			return new ResponseEntity<>("Không được để trống các ô!" ,HttpStatus.BAD_REQUEST);
 		}
-		if (passwordEncoder.matches( jsonObj.get("oldPassword").toString(), userService.findById(session.getAttribute("username").toString()).getPassword()) 
+		if (passwordEncoder.matches( jsonObj.get("oldPassword").toString(), userService.findById(context.getAuthentication().getName()).getPassword())
 				== false) {
 			return new ResponseEntity<>("Mật khẩu cũ không đúng!" ,HttpStatus.BAD_REQUEST);
 		}
@@ -99,7 +105,7 @@ public class AccountRestController {
 		
 		
 		String encrip = userService.encrypPassword(jsonObj.get("newPassword").toString());
-		User user =  userService.findById(session.getAttribute("username").toString());
+		User user =  userService.findById(context.getAuthentication().getName());
 		user.setPassword(encrip);
 		userService.save(user);
 		
