@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.forum.respository.NotificationRepository;
+import com.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,9 @@ public class TopicPageController {
     @Autowired
     NotificationRepository notificationRepository;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("/topic/{category}/{page}")
     public String showTopicPage(@PathVariable("category") int category, @PathVariable("page") int page, ModelMap model, HttpSession session) {
         List<Post> list = postService.getPageSortElement(page - 1, 5, "id_post", category);
@@ -45,6 +49,9 @@ public class TopicPageController {
         model.addAttribute("notification", notificationRepository
                 .findAllByReceiver_UsernameOrderByIdNotificationDesc(context.getAuthentication().getName())
                 .orElse(Collections.emptyList()));
+        if (context != null && context.getAuthentication().getName() != null) {
+            model.addAttribute("user", userService.findById((context.getAuthentication().getName())));
+        }
 
         if (postRepository.countRecord(category) % 5 != 0) {
             model.addAttribute("amountOfPage", postRepository.countRecord(category) / 5 + 1);

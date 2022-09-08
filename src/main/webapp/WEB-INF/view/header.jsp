@@ -21,6 +21,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link href="resources/css/style.css" rel="stylesheet">
     <script src="resources/js/utils.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link href="custom.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="http://localhost:8000/resources/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <base href="http://localhost:8000/"/>
+    <script src="resources/js/utils.js"></script>
 </head>
 
 <body>
@@ -61,22 +74,25 @@
                         <ul class="dropdown-menu scrollable-menu" role="menu">
                             <c:forEach items="${notification}" var="item">
                                 <li style="${!item.isReaded() ? 'background: steelblue' : ''}">
-                                    <a class="dropdown-item" href="/pageContent/${item.idPost}/${item.idNotification}">${item.message}</a></li>
+                                    <a class="dropdown-item"
+                                       href="/pageContent/${item.idPost}/${item.idNotification}">${item.message}</a></li>
                             </c:forEach>
                         </ul>
                     </div>
                 </span>
+                <span>
                 <button type="text" class="dropdown" data-toggle="dropdown"
                         style="width: auto; height: auto; z-index: 999;">
                     <a href="#">
-                        <a href="#" style="color: black; text-decoration: none;">${username}</a>
+                        <a href="#" style="color: black; text-decoration: none;">${user.username}</a>
                     </a>
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="/manage-post-user">Quản lý bài viết</a>
                     <a class="dropdown-item" href="/setting">Cài đặt</a>
-                    <a class="dropdown-item" href="" onclick="logOut()">Đăng xuất</a>
+                    <a class="dropdown-item" href="/logout" onclick="logOut()">Đăng xuất</a>
                 </div>
+                    </span>
             </div>
         </div>
     </div>
@@ -149,12 +165,14 @@
 </div>
 <!--End: Banner-->
 </body>
+
 <script>
     $(document).ready(function () {
-        if (typeof getCookie("Authorization") == "undefined" || "${user.username}" == "") {
+        if (typeof getCookie("Authorization") == "undefined") {
             $("#login").show();
         } else {
             $("#account").show();
+            if ("${user.role}" === "USER") document.getElementById("admin").style.display = "none";
         }
     })
 </script>
@@ -164,6 +182,7 @@
     function logOut() {
         clearCookies();
         window.location.href = "/logout";
+        alert("123")
     }
 </script>
 

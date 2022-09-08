@@ -104,8 +104,8 @@ public class AccountController {
         		+ "<b><u>*VUI LÒNG ĐỔI LẠI MẬT KHẨU SAU KHI ĐĂNG NHẬP LẠI*</u></b>";
          
         helper.setTo(email);
-        helper.setSubject("FORUM PTIT-LẤY LẠI MẬT KHẨU"); 
-        
+        helper.setSubject("FORUM PTIT-LẤY LẠI MẬT KHẨU");
+
         helper.setText(html, true);
  
         // Send Message!

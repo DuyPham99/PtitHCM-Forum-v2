@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
+
 @Controller
 public class LoginController {
 	
@@ -18,14 +20,14 @@ public class LoginController {
 		return "login";
 	}	
 	
-	@GetMapping("/logout") 	
+	@GetMapping("logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 		    new SecurityContextLogoutHandler().logout(request, response, auth);
 		}		
 		request.getSession().removeAttribute("username");
-		
+		request.getSession().removeAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		return "redirect:/";
 	}	
 		

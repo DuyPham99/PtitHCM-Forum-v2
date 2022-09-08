@@ -6,6 +6,7 @@ import java.util.Collections;
 
 import com.forum.entity.Notification;
 import com.forum.respository.NotificationRepository;
+import com.forum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpRequest;
@@ -37,7 +38,10 @@ public class PageController {
 
 	@Autowired
 	NotificationRepository notificationRepository;
-	
+
+	@Autowired
+	UserService userService;
+
 	@GetMapping("/pageContent/{idPost}")
 	String showPage(ModelMap model, @PathVariable ("idPost") int idPost,  HttpServletRequest request) {
 		Post post = postService.findById(idPost);
@@ -49,6 +53,7 @@ public class PageController {
 			model.addAttribute("notification",
 					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(context.getAuthentication().getName())
 							.orElse(Collections.emptyList()));
+			model.addAttribute("user", userService.findById((context.getAuthentication().getName())));
 		}
 		return "pageContent";
 	}

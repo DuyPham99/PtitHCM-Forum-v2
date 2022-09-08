@@ -28,7 +28,7 @@ public class EmailSender {
     public static final String MY_EMAIL = "nhockteen2001@gmail.com";
  
     // Replace password!!
-    public static final String MY_PASSWORD = "phamducduy123IT";
+    public static final String MY_PASSWORD = "pducduy99A";
  
     // And receiver!
     public static final String FRIEND_EMAIL = "";
