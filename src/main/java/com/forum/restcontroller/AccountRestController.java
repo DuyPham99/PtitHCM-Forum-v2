@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.forum.respository.ProfileRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,7 +52,10 @@ public class AccountRestController {
 
 	@Autowired
 	ProfileService profileService;
-	
+
+	@Autowired
+	ProfileRepository profileRepository;
+
 	String pathSave;
 	String filename;
 
@@ -59,11 +64,35 @@ public class AccountRestController {
 	@ResponseBody
 	void save(@Valid @RequestBody Profile profile, HttpServletRequest request, ModelMap model, HttpSession session) {
 		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
-		profile.setAvatar("images/" + context.getAuthentication().getName().trim()+ ".jpg");
-		profileService.save(profile);
+		Profile profile1 = profileRepository.findByUsername(context.getAuthentication().getName());
+
+		if (StringUtils.isNotBlank(profile.getName())) {
+			profile1.setName(profile.getName());
+		}
+
+		if (profile.getBirthday() != null) {
+			profile1.setBirthday(profile.getBirthday());
+		}
+
+		if (StringUtils.isNotBlank(profile.getAddress())) {
+			profile1.setAddress(profile.getAddress());
+		}
+
+		if (StringUtils.isNotBlank(profile.getIdCard())) {
+			profile1.setIdCard(profile.getIdCard());
+		}
+
+		profile1.setGender(profile.getGender());
+
+		if (StringUtils.isNotBlank(profile.getPhoneNumber())) {
+			profile1.setPhoneNumber(profile.getPhoneNumber());
+		}
+
+		profile1.setAvatar("images/" + context.getAuthentication().getName().trim()+ ".jpg");
+
+		profileService.save(profile1);
 	}
 
-	
 	@PostMapping("/image/save")
 	void saveImage(@RequestParam("avatar") MultipartFile file, HttpSession session, HttpServletResponse response, ModelMap model) throws IOException {
 		String path = session.getServletContext().getRealPath("/");

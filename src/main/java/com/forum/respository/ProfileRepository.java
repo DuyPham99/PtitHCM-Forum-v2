@@ -7,5 +7,5 @@ import com.forum.entity.Profile;
 
 @Repository
 public interface ProfileRepository extends CrudRepository<Profile, String>{
-
+    Profile findByUsername(String username);
 }

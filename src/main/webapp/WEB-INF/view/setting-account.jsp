@@ -93,7 +93,7 @@
                                             <input type="text" name="phoneNumber" id="phoneNumber"
                                                 value="${profile.phoneNumber}">
                                             <br><br>
-                                            <a href="#">Thay đổi email</a>
+<%--                                            <a href="#">Thay đổi email</a>--%>
                                         </div>
 
 
@@ -183,7 +183,7 @@
                             data: JSON.stringify(data1),
                             // prevent jQuery from automatically transforming the data into a query string
                             success: function (response) {
-                                window.location.href = response;
+                                alert("Thành công");
                             },
                             error: function (xhr, ajaxOptions, error) {
                                 var log = JSON.parse(xhr.responseText)

@@ -329,7 +329,7 @@
                 <div class="thumb">
                     <a href="/pageContent/${study.get(0).idPost}"> <img
                             src="${study.get(0).thumb}"
-                            width="552" height="200">
+                            width="552" height="270">
                     </a>
                 </div>
                 <!--End: Thumb-->
@@ -508,7 +508,7 @@
         </div>
         <!-- End: Large -->
     </c:if>
-    <div class="row mt-3">
+    <div class="row mt-3 border">
         <c:if test="${club.size() >= 2}">
             <div class="col-md-6">
                 <div class="row">
@@ -566,7 +566,7 @@
         </div>
     </div>
     </c:if>
-    <div class="row mt-3">
+    <div class="row mt-3 border">
         <c:if test="${club.size() >= 4}">
             <div class="col-md-6">
                 <div class="row">
@@ -740,7 +740,7 @@
         Chia sẻ kinh nghiệm <span class=""></span><a href="/topic/5/1" class="more">
         Xem thêm >></a> </span></a>
     </p>
-    <div class="row mt-3">
+    <div class="row mt-3 border">
         <c:if test="${exp.size() >= 1 }">
             <div class="col-md-6">
                 <div class="row">
@@ -799,7 +799,7 @@
             </div>
         </c:if>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3 border">
         <c:if test="${exp.size() >= 3 }">
             <div class="col-md-6">
                 <div class="row">

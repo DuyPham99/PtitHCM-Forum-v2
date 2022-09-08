@@ -39,7 +39,7 @@ public class RegisterRestController {
 		profile.setUsername(user.getUsername());
 		profile.setAvatar("images/user.png");
 
-		profileService.save(profile);
+		user.setProfile(profile);
 		userService.save(user);
 		return ResponseEntity.ok("");
 	}

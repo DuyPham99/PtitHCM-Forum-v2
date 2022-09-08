@@ -8,6 +8,7 @@ import com.forum.entity.Notification;
 import com.forum.respository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpOutputMessage;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,6 +21,7 @@ import com.forum.entity.Post;
 import com.forum.service.CategoryService;
 import com.forum.service.PostService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
@@ -37,13 +39,13 @@ public class PageController {
 	NotificationRepository notificationRepository;
 	
 	@GetMapping("/pageContent/{idPost}")
-	String showPage(ModelMap model, @PathVariable ("idPost") int idPost,  HttpSession session) {
+	String showPage(ModelMap model, @PathVariable ("idPost") int idPost,  HttpServletRequest request) {
 		Post post = postService.findById(idPost);
-		SecurityContext context = (SecurityContext) session.getAttribute(SPRING_SECURITY_CONTEXT_KEY);
+		SecurityContext context = (SecurityContext) request.getSession().getAttribute(SPRING_SECURITY_CONTEXT_KEY);
 		String category = post.getCategory().getName();
 		model.addAttribute("post", post);
 		model.addAttribute("category", category);
-		if (context.getAuthentication().getName() != null) {
+		if (context != null && context.getAuthentication().getName() != null) {
 			model.addAttribute("notification",
 					notificationRepository.findAllByReceiver_UsernameOrderByIdNotificationDesc(context.getAuthentication().getName())
 							.orElse(Collections.emptyList()));
