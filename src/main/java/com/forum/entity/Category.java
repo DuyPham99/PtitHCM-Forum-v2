@@ -28,7 +28,6 @@ public class Category {
 	LocalDate createDate;
 
 	@OneToMany(mappedBy = "category")
-	@JsonManagedReference
 	Set<Post> posts;
 
 	@ManyToMany

@@ -37,7 +37,7 @@
 				<div class="container-fluid bg-white">
 					<div class="row text-center border-bottom">
 						<div class="col text-right">
-							<a href="#"><img src="images/ptitLogo.jpg" height="70" class="logo" width="270"
+							<a href="/"><img src="images/ptitLogo.jpg" height="70" class="logo" width="270"
 									style="width: 30%;"></a>
 						</div>
 

@@ -35,7 +35,7 @@ public class HomePageController {
 	
 	@RequestMapping("/")
 	public String homepage(ModelMap model, HttpSession session) {
-		model.addAttribute("active", postRespository.findAllByCategory_IdCategory(1, PageRequest.of(0, 5)));
+		model.addAttribute("active", postRespository.findAllByCategory_IdCategoryOrderByIdPostDesc(1, PageRequest.of(0, 5)));
 		model.addAttribute("study", postRespository.getStudyPost());
 		model.addAttribute("club", postRespository.getClubPost());
 		model.addAttribute("talk", postRespository.getTalkPost());

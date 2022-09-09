@@ -51,19 +51,15 @@ public class User {
 	Profile profile;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonBackReference
-	List<Post> posts; 
+	List<Post> posts;
 	
 	@OneToMany(mappedBy = "user")
-	@JsonBackReference
 	List<Comment> comments;
 
 	@ManyToMany(mappedBy = "users")
-	@JsonBackReference
 	Set<Category> categories;
 
 	@OneToMany(mappedBy = "receiver")
-	@JsonBackReference
 	List<Notification> notifications;
 
 	public String getUsername() {

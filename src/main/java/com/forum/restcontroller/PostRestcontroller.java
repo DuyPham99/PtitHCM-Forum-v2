@@ -115,7 +115,7 @@ public class PostRestcontroller {
         // wait for refresh image folder
         while (true) {
             try {
-                File file = new ClassPathResource("static/images/" + timestamp + " " + fileName).getFile();
+                File file = new File("src/main/resources/static/images/" + timestamp + " " + fileName);
                 if (file.exists()) break;
             } catch (Exception e) {
             }

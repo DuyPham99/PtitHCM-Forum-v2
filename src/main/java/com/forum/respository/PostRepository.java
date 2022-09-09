@@ -32,7 +32,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 			+ "LIMIT 5;", nativeQuery = true)
 	Optional<List<Post>> getActivePost();
 
-	List<Post> findAllByCategory_IdCategory(int id, Pageable pageable);
+	List<Post> findAllByCategory_IdCategoryOrderByIdPostDesc(int id, Pageable pageable);
 
 	@Query(value = "SELECT * FROM forum.post\r\n"
 			+ "WHERE id_category = 2\r\n"

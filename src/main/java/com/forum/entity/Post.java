@@ -65,7 +65,6 @@ public class Post {
 
 	@ManyToOne
 	@JoinColumn(name = "id_category")
-	@JsonBackReference
 	Category category;
 
 	public Post() {
