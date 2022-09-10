@@ -63,12 +63,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-4" style="background-color:lavender;">
+                <label>Thống kê bài viết của các danh mục</label>
                 <canvas id="myChart1" width="100%" height="100%"></canvas>
             </div>
             <div class="col-sm-4" style="background-color:lavenderblush;">
+                <label>Thống kê người viết tích cực</label>
                 <canvas id="myChart2" width="100%" height="100%"></canvas>
             </div>
             <div class="col-sm-4" style="background-color:lavender;">
+                <label>Thống kê bài viết qua các tháng trong năm</label>
                 <canvas id="myChart3" width="100%" height="100%"></canvas>
             </div>
         </div>
@@ -95,7 +98,7 @@
             labels: ['Hoạt động', 'Học tập', 'Đội - Nhóm', 'Chuyện trò - Tâm sự', 'Chia sẻ - Kinh nghiệm', 'Khác'],
             datasets: [{
                 label: 'Bài viết từng danh mục',
-                data: [${posts.get("Hoạt động")}, ${postEachCategories.get("Học tập")}, ${postEachCategories.get("Đội - Nhóm")}, ${postEachCategories.get("Chuyện trò- Tâm sự")}, ${postEachCategories.get("Chia sẻ - Kinh nghiệm")}, ${postEachCategories.get("Khác")}],
+                data: [${postEachCategories.get("Hoạt động")}, ${postEachCategories.get("Học tập")}, ${postEachCategories.get("Đội - Nhóm")}, ${postEachCategories.get("Chuyện trò- Tâm sự")}, ${postEachCategories.get("Chia sẻ - Kinh nghiệm")}, ${postEachCategories.get("Khác")}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
