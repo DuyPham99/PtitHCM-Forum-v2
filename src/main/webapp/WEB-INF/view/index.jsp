@@ -250,7 +250,7 @@
                     </div>
                 </c:if>
             </div>
-            <div class="row row-cols-2">
+            <div class="row row-cols-2 mt-5">
                 <c:if test="${active.size() >= 4}">
                     <div class="col-md-6 mt-2">
                         <!--Start: Block-post-->
@@ -278,7 +278,7 @@
                 </c:if>
 
                 <c:if test="${active.size() >= 5}">
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 mt-2 ">
                         <!--Start: Block-post-->
                         <div class="img-thumbnail">
                             <a href="/pageContent/${active.get(4).idPost}"><img
@@ -469,10 +469,10 @@
 </div>
 </div>
 <!-- End: Content -->
-<br><br><br><br><br>
+<br><br><br><br><br><br><br>
 <!--Club-->
 <!-- Start: Content -->
-<div class="container">
+<div class="container mt-6">
     <p class="topic border-bottom">
         Đội - Nhóm <span class=""></span><a href="/topic/3/1" class="more"> Xem
         thêm >></a> </span></a>
